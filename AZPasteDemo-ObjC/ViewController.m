@@ -19,12 +19,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self initPasteBoard];
+//    [self initPasteBoard];
 //    [self setDataToPasteBoard];
 //    [self checkPasteBoard];
 //    [self playPasteBoard];
 //    [self optionDatePasteBoard];
 //    [self optionLocalPasteBoard];
+    [self setDataForType];
 }
 
 - (void)initPasteBoard {
@@ -35,6 +36,23 @@
     NSLog(@"go in 1");
     UIPasteboard* uPasteBoard1 = [UIPasteboard pasteboardWithUniqueName];
     NSLog(@"gPasteBoard=%@, uPasteBoard=%@，uPasteBoard1=%@", gPasteBoard.name, uPasteBoard.name, uPasteBoard1.name);
+}
+
+- (void)setDataForType {
+    UIPasteboard* gPasteBoard = [UIPasteboard generalPasteboard];
+    NSLog(@"0) string:%@, items:%@", gPasteBoard.string, gPasteBoard.items);
+    
+    NSString* key = @"weizhong";
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:@"20200415" options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    [gPasteBoard setData:data forPasteboardType:key];
+    NSLog(@"1) data:%@, items:%@", [gPasteBoard dataForPasteboardType:key], gPasteBoard.items);
+    
+    //清空剪贴板
+    gPasteBoard.string = @"";
+    NSLog(@"2) data:%@, items:%@", [gPasteBoard dataForPasteboardType:key].description, gPasteBoard.items);
+    
+    [gPasteBoard setItems:@[@{key:data}]];
+    NSLog(@"2) data:%@, items:%@", [gPasteBoard dataForPasteboardType:key].description, gPasteBoard.items);
 }
 
 - (void)optionDatePasteBoard {
